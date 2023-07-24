@@ -38,3 +38,36 @@ let products: Products = {
 export const findAll = async (): Promise<Product[]> => Object.values(products);
 
 export const find = async (id: number): Promise<Product> => products[id];
+
+export const create = async (newItem: BaseProduct): Promise<Product> => {
+    const id = new Date().valueOf();
+  
+    products[id] = {
+      id,
+      ...newItem,
+    };
+  
+    return products[id];
+};
+
+export const update = async (id: number, itemUpdate: BaseProduct): Promise<Product | null> => {
+    const item = await find(id);
+  
+    if (!item) {
+      return null;
+    }
+  
+    products[id] = { id, ...itemUpdate };
+  
+    return products[id];
+};
+
+export const remove = async (id: number): Promise<null | void> => {
+    const item = await find(id);
+  
+    if (!item) {
+      return null;
+    }
+  
+    delete products[id];
+};
