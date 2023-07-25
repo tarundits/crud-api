@@ -7,8 +7,8 @@ dotenv.config();
 
 console.log(`The connection string: ${process.env.DB_CONN_STRING}`);
 
-const url = 'mongodb://localhost:27017';
-// const url = process.env.DB_CONN_STRING
+// const url = 'mongodb://localhost:27017';
+const url = process.env.DB_CONN_STRING as string;
 const dbName = 'crud-api'; // Change this to your desired database name
 
 let db: Db;
