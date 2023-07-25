@@ -1,13 +1,6 @@
-/**
- * Data Model Interfaces
- */
-import { BaseProduct, Product } from "./product.interface";
-import { Products } from "./products.interface";
+import { BaseProduct, Product } from "../interfaces/product.interface";
+import { Products } from "../interfaces/products.interface";
 
-
-/**
- * In-Memory Store
- */
 let products: Products = {
     1: {
       id: 1,
@@ -32,9 +25,6 @@ let products: Products = {
     }
 };
 
-/**
- * Service Methods
- */
 export const findAll = async (): Promise<Product[]> => Object.values(products);
 
 export const find = async (id: number): Promise<Product> => products[id];

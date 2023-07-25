@@ -5,6 +5,9 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import { productsRouter } from "./config/router";
+import { errorHandler } from "./middleware/error.middleware";
+import { notFoundHandler } from "./middleware/not-found.middleware";
 
 dotenv.config();
 
@@ -25,6 +28,10 @@ if (!process.env.PORT) {
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use("/api/catalog/product", productsRouter);
+
+app.use(errorHandler);
+app.use(notFoundHandler);
 
 /**
  * Server Activation
