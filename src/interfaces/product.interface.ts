@@ -6,5 +6,5 @@ export interface BaseProduct {
 }
 
 export interface Product extends BaseProduct {
-    id: number;
+    _id: string;
 }

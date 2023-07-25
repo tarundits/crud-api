@@ -1,43 +1,43 @@
 import { BaseProduct, Product } from "../interfaces/product.interface";
 import { Products } from "../interfaces/products.interface";
-import getDb from "../config/db";
+import { getProductsCollection } from "../config/db";
 import ProductMdl from "../models/product";
 import { ObjectId } from "mongodb";
 
 const findAll = async () => {
-  const db = await getDb();
-  const products = await db.collection("products").find({}).toArray();
+  const productsCollection = getProductsCollection();
+  const products = await productsCollection.find({}).toArray();
   return products;
 }
 
 const find = async (id: string) => {
-  const db = await getDb();
+  const productsCollection = getProductsCollection();
   const query = { _id: new ObjectId(id) };
-  const product = await db.collection("products").findOne(query);
+  const product = await productsCollection.findOne(query);
 
   return product;
 };
 
 const create = async (newItem: BaseProduct) => {
-    const db = await getDb();
+    const productsCollection = getProductsCollection();
     const newProduct = newItem as ProductMdl;
-    const result = await db.collection("products").insertOne(newProduct);
+    const result = await productsCollection.insertOne(newProduct);
   
     return result;
 };
 
 const update = async (id: string, itemUpdate: BaseProduct) => {
-    const db = await getDb();
+    const productsCollection = getProductsCollection();
     const query = { _id: new ObjectId(id) };
-    const result = await db.collection("products").updateOne(query, { $set: itemUpdate });
+    const result = await productsCollection.updateOne(query, { $set: itemUpdate });
 
     return result;
 };
 
 const remove = async (id: string) => {
-    const db = await getDb();
+    const productsCollection = getProductsCollection();
     const query = { _id: new ObjectId(id) };
-    const result = await db.collection("products").deleteOne(query);
+    const result = await productsCollection.deleteOne(query);
 
     return result;
 };
