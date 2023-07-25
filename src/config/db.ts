@@ -1,8 +1,14 @@
 // config/dbConnection.ts
 
 import { Db, Collection, MongoClient } from 'mongodb';
+import * as dotenv from "dotenv";
 
-const url = 'mongodb://localhost:27017'; // Change this to your MongoDB URI
+dotenv.config();
+
+console.log(`The connection string: ${process.env.DB_CONN_STRING}`);
+
+const url = 'mongodb://localhost:27017';
+// const url = process.env.DB_CONN_STRING
 const dbName = 'crud-api'; // Change this to your desired database name
 
 let db: Db;
@@ -26,8 +32,8 @@ const initializeDb = async () => {
   }
 };
 
-const getProductsCollection = () => {
-  initializeDb();
+const getProductsCollection = async () => {
+  await initializeDb();
   if (!productsCollection) {
     throw new Error('Database not initialized. Call initializeDb first.');
   }

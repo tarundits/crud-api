@@ -5,13 +5,13 @@ import ProductMdl from "../models/product";
 import { ObjectId } from "mongodb";
 
 const findAll = async () => {
-  const productsCollection = getProductsCollection();
+  const productsCollection = await getProductsCollection();
   const products = await productsCollection.find({}).toArray();
   return products;
 }
 
 const find = async (id: string) => {
-  const productsCollection = getProductsCollection();
+  const productsCollection = await getProductsCollection();
   const query = { _id: new ObjectId(id) };
   const product = await productsCollection.findOne(query);
 
@@ -19,7 +19,7 @@ const find = async (id: string) => {
 };
 
 const create = async (newItem: BaseProduct) => {
-    const productsCollection = getProductsCollection();
+    const productsCollection = await getProductsCollection();
     const newProduct = newItem as ProductMdl;
     const result = await productsCollection.insertOne(newProduct);
   
@@ -27,7 +27,7 @@ const create = async (newItem: BaseProduct) => {
 };
 
 const update = async (id: string, itemUpdate: BaseProduct) => {
-    const productsCollection = getProductsCollection();
+    const productsCollection = await getProductsCollection();
     const query = { _id: new ObjectId(id) };
     const result = await productsCollection.updateOne(query, { $set: itemUpdate });
 
@@ -35,7 +35,7 @@ const update = async (id: string, itemUpdate: BaseProduct) => {
 };
 
 const remove = async (id: string) => {
-    const productsCollection = getProductsCollection();
+    const productsCollection = await getProductsCollection();
     const query = { _id: new ObjectId(id) };
     const result = await productsCollection.deleteOne(query);
 
