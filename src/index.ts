@@ -8,6 +8,7 @@ import helmet from "helmet";
 import { productsRouter } from "./config/router";
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
+import getDb from "./config/db";
 
 dotenv.config();
 
@@ -32,6 +33,19 @@ app.use("/api/catalog/product", productsRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
+
+async function main() {
+    try {
+      const db = await getDb();
+      console.log('Connected to MongoDB!');
+      // Your MongoDB-related code here
+      // For example, you can fetch data, insert documents, etc.
+    } catch (err) {
+      console.error('Error:', err);
+    }
+}
+
+main();
 
 /**
  * Server Activation

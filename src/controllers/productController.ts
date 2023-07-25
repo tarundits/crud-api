@@ -5,7 +5,7 @@ import { BaseProduct, Product } from "../interfaces/product.interface";
 // To fetch all the products.
 const getAllProducts = async (req: Request, res: Response) => {
     try {
-        const items: Product[] = await ProductService.findAll();
+        const items = await ProductService.findAll();
     
         res.status(200).send(items);
     } catch (e: any) {
@@ -15,10 +15,10 @@ const getAllProducts = async (req: Request, res: Response) => {
 
 // To get the product details by id.
 const getProductById = async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
+    const id = req?.params?.id;
   
     try {
-        const item: Product = await ProductService.find(id);
+        const item = await ProductService.find(id);
   
         if (item) {
             return res.status(200).send(item);
@@ -45,12 +45,12 @@ const addNewProduct = async (req: Request, res: Response) => {
 
 // To update the product by id.
 const editProduct = async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
+    const id = req?.params?.id;
   
     try {
-        const itemUpdate: Product = req.body;
+        const itemUpdate = req.body;
     
-        const existingItem: Product = await ProductService.find(id);
+        const existingItem = await ProductService.find(id);
     
         if (existingItem) {
             const updatedItem = await ProductService.update(id, itemUpdate);
@@ -68,10 +68,18 @@ const editProduct = async (req: Request, res: Response) => {
 // To delete the product.
 const deleteProduct = async (req: Request, res: Response) => {
     try {
-        const id: number = parseInt(req.params.id, 10);
-        await ProductService.remove(id);
+        const id = req?.params?.id;
+        const result = await ProductService.remove(id);
     
-        res.sendStatus(204);
+        // res.sendStatus(204);
+        if (result && result.deletedCount) {
+            res.status(202).send(`Successfully removed product with id ${id}`);
+        } else if (!result) {
+            res.status(400).send(`Failed to remove product with id ${id}`);
+        } else if (!result.deletedCount) {
+            res.status(404).send(`Product with id ${id} does not exist`);
+        }
+
     } catch (e: any) {
         res.status(500).send(e.message);
     }
