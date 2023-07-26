@@ -13,20 +13,29 @@ const jwt_str = process.env.JWT_SECRET as string;
 
 const register = async (req: Request, res: Response) => {
     try {
-        let  newUser = new User(req.body);
-        newUser.password = bcrypt.hashSync(req.body.password, 10);
-        newUser.save();
-
-        if(newUser) {
-            generateToken(res, newUser._id);
-            return responseInterceptor(res, 200, { newUser });
-        } else {
-            return responseInterceptor(res, 500, { message: "Error in saving the user." });
-        }
+      const { name, email, password } = req.body;
+  
+      // Check if the email is already registered in the database
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        // If the email already exists, return a 400 Bad Request response.
+        return responseInterceptor(res, 400, { message: "Duplicate email. Please enter another one." });
+      }
+  
+      const newUser = new User({ name, email, password: bcrypt.hashSync(password, 10) });
+      await newUser.save();
+  
+      if (newUser) {
+        generateToken(res, newUser._id);
+        return responseInterceptor(res, 200, { newUser });
+      } else {
+        return responseInterceptor(res, 500, { message: "Error in saving the user." });
+      }
     } catch (error: any) {
-        return responseInterceptor(res, 500, {}, error.message);
+      return responseInterceptor(res, 500, {}, error.message);
     }
-}
+  };
+  
 
 const login = async (req: Request, res: Response) => {
     try {

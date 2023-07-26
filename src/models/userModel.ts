@@ -30,6 +30,14 @@ const userSchema = new mongoose.Schema<UserDocument>({
     type: Date,
     default: Date.now
   }
+},
+{
+  toJSON: {
+    // Specify the fields to include/exclude in the JSON representation.
+    transform: function (doc, ret) {
+      delete ret.password; // Exclude the 'password' field from the JSON representation.
+    },
+  },
 });
 
 // Add the matchPassword method to the userSchema
