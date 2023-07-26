@@ -1,6 +1,8 @@
 import mongoose, { Document, Model } from 'mongoose';
+import { nanoid } from 'nanoid';
 
 interface ProductDocument extends Document {
+    _id: string;
     name: string;
     price: number;
     description: string;
@@ -8,6 +10,10 @@ interface ProductDocument extends Document {
 }
 
 const productSchema = new mongoose.Schema<ProductDocument>({
+    _id: {
+      type: String,
+      default: () => nanoid(), 
+    },
     name: {
       type: String,
       trim: true,

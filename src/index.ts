@@ -5,8 +5,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { productRouter } from "./config/productRouter";
-import { userRouter } from "./config/userRouter";
+import { router as routes } from "./routes";
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 import connectDB from "./config/db";
@@ -31,8 +30,7 @@ if (!process.env.PORT) {
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use("/api/user", userRouter);
-app.use("/api/catalog/product", productRouter);
+app.use("/api", routes);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
