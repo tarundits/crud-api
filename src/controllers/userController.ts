@@ -9,12 +9,17 @@ import { generateToken } from "../utils/generateToken";
 
 dotenv.config();
 
+interface myRequest{
+    name: string;
+    email: string;
+    password: string;
+}
+
 const jwt_str = process.env.JWT_SECRET as string;
 
 const register = async (req: Request, res: Response) => {
     try {
       const { name, email, password } = req.body;
-  
       // Check if the email is already registered in the database
       const existingUser = await User.findOne({ email });
       if (existingUser) {

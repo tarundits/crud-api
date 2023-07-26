@@ -18,8 +18,6 @@ const protect = async (req: AuthenticatedRequest, res: Response, next: NextFunct
   
     // Read JWT from the 'jwt' cookie
     token = req.headers["authorization"];
-
-    console.log('The header token', token);
   
     if (token) {
       try {
